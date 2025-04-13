@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+1.50<!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
@@ -160,6 +160,55 @@
         width: 90%;
       }
     }
+
+    /* Estilos dos botões de compartilhamento */
+    .share-buttons {
+      margin-top: 20px;
+    }
+
+    .share-buttons a {
+      display: inline-block;
+      margin: 10px;
+      padding: 15px 30px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .share-whatsapp {
+      background: #25D366;
+    }
+
+    .share-facebook {
+      background: #3b5998;
+    }
+
+    .share-instagram {
+      background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+    }
+
+    .share-whatsapp:hover {
+      opacity: 0.9;
+    }
+
+    .share-facebook:hover {
+      opacity: 0.9;
+    }
+
+    .share-instagram:hover {
+      opacity: 0.9;
+    }
+
+    .share-app {
+      background: #555;
+    }
+
+    .share-app:hover {
+      background: #777;
+    }
   </style>
 </head>
 <body>
@@ -169,17 +218,17 @@
 
     <div class="meta">
       <strong>Meta:</strong> R$600
-      <strong>Arrecadado:</strong> R$0.13
+      <strong>Arrecadado:</strong> R$1.50
       <div class="progress-bar">
         <div class="progress" id="progressBar">30%</div>
       </div>
     </div>
 
     <!-- Foto do PC -->
-    <img src= img/foto.jpgmeta60Foto da placa-mãe danificada">
+    <img src="img/foto.jpg" alt="Foto da placa-mãe danificada">
 
     <!-- Vídeo sobre a situação do PC -->
-    <divdanifotovideo-container">
+    <div class="video-container">
       <h2>Veja a situação do meu PC</h2>
       <video width="100%" controls>
         <source src="video/video.mp4" type="video/mp4">
@@ -194,6 +243,15 @@
 
     <button class="button" onclick="copyPix()">Copiar chave Pix</button>
     <p id="copiedMsg" class="copied">Chave Pix copiada com sucesso!</p>
+
+    <!-- Botões de Compartilhamento -->
+    <div class="share-buttons">
+      <a class="share-whatsapp" target="_blank" title="Compartilhar no WhatsApp">WhatsApp</a>
+      <a class="share-facebook" target="_blank" title="Compartilhar no Facebook">Facebook</a>
+      <a class="share-instagram" href="https://www.instagram.com/doacao_placa_mae_/" target="_blank" title="Visite o Instagram">Instagram</a>
+      <a class="share-app" href="#" onclick="shareViaApp()" title="Compartilhar com outros aplicativos">Compartilhar com outro app</a>
+    </div>
+
   </div>
 
   <div class="popup" id="popupMsg">Você é incrível! Obrigado pela força!</div>
@@ -276,13 +334,35 @@
     }
 
     function updateProgressBar() {
-      const arrecadado = 0.13;
+      const arrecadado = 1.50;
       const meta = 600;
       const percent = Math.min(100, Math.round((arrecadado / meta) * 100));
       const bar = document.getElementById("progressBar");
       bar.style.width = percent + "%";
       bar.innerText = percent + "%";
     }
+
+    function shareViaApp() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'Me ajude a comprar minha placa-mãe!',
+          url: window.location.href
+        }).then(() => {
+          console.log("Compartilhado com sucesso!");
+        }).catch((error) => {
+          console.log("Erro ao compartilhar: ", error);
+        });
+      } else {
+        alert("Compartilhamento não disponível neste dispositivo.");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const url = encodeURIComponent(window.location.href);
+      const message = encodeURIComponent("Me ajude a comprar minha placa-mãe! Qualquer valor já ajuda muito.");
+      document.querySelector('.share-whatsapp').href = `https://api.whatsapp.com/send?text=${message}%20${url}`;
+      document.querySelector('.share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+    });
 
     updateProgressBar();
   </script>
