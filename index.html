@@ -1,1 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajude a comprar minha placa-mãe!</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
+    body {
+      background: linear-gradient(to right, #ff416c, #ff4b2b);
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      color: #fff;
+      padding: 20px;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 30px 20px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+
+    img {
+      max-width: 80%;
+      height: auto;
+      margin: 20px 0;
+      border: 4px solid #fff;
+      border-radius: 10px;
+    }
+
+    .pix-code {
+      font-size: 14px;
+      background: #fff;
+      color: #000;
+      padding: 15px;
+      border-radius: 10px;
+      display: inline-block;
+      word-break: break-word;
+      max-width: 100%;
+      text-align: left;
+      margin-bottom: 10px;
+    }
+
+    .button {
+      margin-top: 10px;
+      display: inline-block;
+      background: #00ff88;
+      color: #000;
+      font-weight: bold;
+      padding: 12px 25px;
+      border-radius: 10px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 16px;
+    }
+
+    .button:hover {
+      background: #00cc6a;
+    }
+
+    .copied {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #b3ffb3;
+      display: none;
+    }
+
+    .meta {
+      margin-top: 20px;
+      font-size: 16px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      height: 25px;
+      margin-top: 10px;
+    }
+
+    .progress {
+      background: #00ff88;
+      height: 100%;
+      width: 0%;
+      transition: width 1s ease-in-out;
+      color: #000;
+      font-weight: bold;
+      line-height: 25px;
+    }
+
+    .confetti, .emoji, .firework {
+      position: absolute;
+      pointer-events: none;
+      animation: fall 2s ease-out forwards;
+    }
+
+    .emoji {
+      font-size: 24px;
+    }
+
+    @keyframes fall {
+      0% {
+        opacity: 1;
+        transform: translateY(0) rotate(0deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(300px) rotate(720deg);
+      }
+    }
+
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      background: #fff;
+      color: #000;
+      padding: 20px;
+      border-radius: 15px;
+      transform: translate(-50%, -50%);
+      z-index: 999;
+      display: none;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 0 0 15px #000;
+      text-align: center;
+    }
+
+    @media (max-width: 480px) {
+      .pix-code {
+        font-size: 12px;
+        padding: 10px;
+      }
+
+      .button {
+        font-size: 14px;
+        padding: 10px 20px;
+      }
+
+      .progress {
+        font-size: 14px;
+      }
+
+      .popup {
+        font-size: 16px;
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Me ajude a comprar minha placa-mãe!</h1>
+    <p>Qualquer valor a partir de <strong>R$1</strong> já ajuda muito!</p>
+
+    <div class="meta">
+      <strong>Meta:</strong> R$500<br>
+      <strong>Arrecadado:</strong> R$150
+      <div class="progress-bar">
+        <div class="progress" id="progressBar">30%</div>
+      </div>
+    </div>
+
+    <img src="https://api.qrserver.com/v1/create-qr-code/?data=00020126330014br.gov.bcb.pix0111045867289065204000053039865802BR5920CLARICE%20SQUENA%20LEITE6010Renascenca62070503***630419CB&size=250x250" alt="QR Code do Pix">
+
+    <p id="pixKey" class="pix-code">
+      00020126330014br.gov.bcb.pix0111045867289065204000053039865802BR5920CLARICE SQUENA LEITE6010Renascenca62070503***630419CB
+    </p>
+
+    <button class="button" onclick="copyPix()">Copiar chave Pix</button>
+    <p id="copiedMsg" class="copied">Chave Pix copiada com sucesso!</p>
+  </div>
+
+  <div class="popup" id="popupMsg">Você é incrível! Obrigado pela força!</div>
+
+  <audio id="donateSound" src="https://www.myinstants.com/media/sounds/coin.mp3"></audio>
+
+  <script>
+    function copyPix() {
+      const pixKey = document.getElementById("pixKey").innerText;
+      navigator.clipboard.writeText(pixKey).then(() => {
+        document.getElementById("copiedMsg").style.display = "block";
+        setTimeout(() => document.getElementById("copiedMsg").style.display = "none", 3000);
+        playSound();
+        showPopup();
+        launchConfetti();
+        launchEmojis();
+        launchFireworks();
+      });
+    }
+
+    function playSound() {
+      const sound = document.getElementById("donateSound");
+      sound.currentTime = 0;
+      sound.play();
+    }
+
+    function showPopup() {
+      const popup = document.getElementById("popupMsg");
+      popup.style.display = "block";
+      setTimeout(() => popup.style.display = "none", 3000);
+    }
+
+    function launchConfetti() {
+      for (let i = 0; i < 20; i++) {
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        confetti.style.width = "10px";
+        confetti.style.height = "10px";
+        confetti.style.background = getRandomColor();
+        confetti.style.left = Math.random() * 100 + "%";
+        confetti.style.top = "0";
+        confetti.style.animationDuration = (Math.random() * 1 + 1.5) + "s";
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 2000);
+      }
+    }
+
+    function launchEmojis() {
+      const emojis = ["❤️", "🚀", "👏", "✨", "🎉", "🥳"];
+      for (let i = 0; i < 10; i++) {
+        const emoji = document.createElement("div");
+        emoji.classList.add("emoji");
+        emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+        emoji.style.left = Math.random() * 100 + "%";
+        emoji.style.top = "0";
+        emoji.style.animationDuration = (Math.random() * 2 + 1) + "s";
+        document.body.appendChild(emoji);
+        setTimeout(() => emoji.remove(), 2500);
+      }
+    }
+
+    function launchFireworks() {
+      for (let i = 0; i < 15; i++) {
+        const firework = document.createElement("div");
+        firework.classList.add("firework");
+        firework.style.background = getRandomColor();
+        firework.style.width = "8px";
+        firework.style.height = "8px";
+        firework.style.left = (Math.random() * 100) + "%";
+        firework.style.top = "0";
+        firework.style.animationDuration = "1.8s";
+        document.body.appendChild(firework);
+        setTimeout(() => firework.remove(), 2000);
+      }
+    }
+
+    function getRandomColor() {
+      const colors = ["#ff0", "#0f0", "#0ff", "#f0f", "#00f", "#f00"];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    function updateProgressBar() {
+      const arrecadado = 0;
+      const meta = 600;
+      const percent = Math.min(100, Math.round((arrecadado / meta) * 100));
+      const bar = document.getElementById("progressBar");
+      bar.style.width = percent + "%";
+      bar.innerText = percent + "%";
+    }
+
+    updateProgressBar();
+  </script>
+</body>
+</html>
