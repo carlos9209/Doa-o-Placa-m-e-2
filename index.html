@@ -169,7 +169,7 @@
 
     <div class="meta">
       <strong>Meta:</strong> R$600
-      <strong>Arrecadado:</strong> R$0
+      <strong>Arrecadado:</strong> R$0.13
       <div class="progress-bar">
         <div class="progress" id="progressBar">30%</div>
       </div>
@@ -276,7 +276,7 @@
     }
 
     function updateProgressBar() {
-      const arrecadado = 0;
+      const arrecadado = 0.13;
       const meta = 600;
       const percent = Math.min(100, Math.round((arrecadado / meta) * 100));
       const bar = document.getElementById("progressBar");
